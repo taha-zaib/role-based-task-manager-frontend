@@ -4,36 +4,46 @@ function Home() {
 
     const navigate = useNavigate();
 
-    const navigateToRegister = (e) => {
+    // const navigateToRegister = (e) => {
 
-        e.preventDefault();
+    //     e.preventDefault();
 
-        try {
+    //     try {
 
-            navigate('/register')
+    //         navigate('/register')
 
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
-    const navigateToLogin = (e) => {
+    // const navigateToLogin = (e) => {
 
-        e.preventDefault();
+    //     e.preventDefault();
 
-        try {
+    //     try {
 
-            navigate('/login')
+    //         navigate('/login')
 
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     return (
-        <div style={{ padding: '20px' }}>
-            <button onClick={navigateToRegister} style={{ margin: '20px', padding: '10px 20px', fontSize: '30px' }}>Register</button>
-            <button onClick={navigateToLogin} style={{ margin: '20px', padding: '10px 20px', fontSize: '30px' }}>Login</button>
+        <div>
+            <h1>Task Manager</h1>
+            <p>Organize your tasks with role-based access control.</p>
+            <button
+                onClick={() => navigate('/register')}
+            >
+                Register
+            </button>
+            <button
+                onClick={() => navigate('/login')}
+            >
+                Login
+            </button>
         </div>
     )
 }

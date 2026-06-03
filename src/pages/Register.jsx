@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -19,6 +22,8 @@ function Register() {
             const response = await registerUser(formData)
             setMessage("Registration Successful!")
 
+            navigate('/login')
+
         } catch (error) {
             setMessage(
                 error.response?.data?.message || "Something went wrong!"
@@ -30,7 +35,7 @@ function Register() {
 
     return (
         <div>
-            <h1>Register</h1>
+            <h2>Create Account</h2>
 
             <form onSubmit={handleSubmit}>
 
@@ -78,6 +83,13 @@ function Register() {
                 </button>
                 
             </form>
+
+            <p>Already have an account?</p>
+            <button 
+                onClick={() => navigate('/login')}
+            >
+                Login
+            </button>
 
             {message && <p>{message}</p>}
         </div>

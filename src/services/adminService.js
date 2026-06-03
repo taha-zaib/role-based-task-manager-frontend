@@ -5,7 +5,6 @@ const API_URL = 'https://role-based-task-manager-production.up.railway.app/api/a
 export const getUsers = async (token) => {
     const response = await axios.get(
         `${API_URL}/users`,
-        {},
         {
             headers: {
                 Authorization: `Bearer ${token}`

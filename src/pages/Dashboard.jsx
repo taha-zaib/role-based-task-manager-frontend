@@ -1,43 +1,17 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import { getTasks, createTask, deleteTask, toggleTaskStatus } from "../services/taskService";
-import { getUsers, promoteUserToAdmin } from "../services/adminService";
 
 
 function Dashboard() {
 
     const [tasks, setTasks] = useState([]);
-    const [users, setUsers] = useState([]);
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(true)
 
     const navigate = useNavigate();
     const { token, user, logout } = useContext(AuthContext)
-
-    //ADMIN SECTION
-    const fetchUsers = async () => {
-        try {
-            const data = await getUsers(token);
-
-            setUsers(data)
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const promoteUser = async (id) => {
-        try {
-            await promoteUserToAdmin(id, token)
-
-            fetchUsers();
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
 
     const addTask = async (e) => {
@@ -111,52 +85,18 @@ function Dashboard() {
 
     useEffect(() => {
         fetchTasks();
-        if (user?.role === 'admin') {
-            fetchUsers();
-        }
     }, [])
 
     if (loading) {
         return <h2>Loading...</h2>
     }
+    
 
     return (
-        <div style={{ padding: '20px' }}>
-            <Navbar />
+        <div>
             <h1>Dashboard</h1>
-            <h2>Role: {user?.role}</h2>
 
-            {user?.role === 'admin' && (
-                <h2>Admin Controls</h2>
-            )}
-
-            {users.map((singleUser) => (
-                <div key={singleUser._id}>
-
-                    <h3>
-                        {singleUser.name}
-                    </h3>
-
-                    <p>
-                        {singleUser.email}
-                    </p>
-
-                    <p>
-                        {singleUser.role}
-                    </p>
-
-                    {singleUser.role !== 'admin' && (
-                        <button 
-                            onClick={() => promoteUser(singleUser._id)}
-                        >
-                            Promote to Admin
-                        </button>
-                    )}
-
-
-                </div>
-            ))}
-
+            {/*TASK FORM*/}
             <form onSubmit={addTask}>
                 <input 
                     type="text"
@@ -171,7 +111,8 @@ function Dashboard() {
                     Add Task
                 </button>
             </form>
-
+            
+            {/*TASK LIST*/ }
             {tasks.length === 0 ? (
                 <p>No tasks found</p>
             ) : (
@@ -195,6 +136,7 @@ function Dashboard() {
                 ))
             )}
 
+            {/*LOGOUT*/}
             <button onClick={handleLogout}>
                 Logout
             </button>

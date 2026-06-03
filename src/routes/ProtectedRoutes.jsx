@@ -7,11 +7,14 @@ function ProtectedRoutes({ children }) {
     // const token = localStorage.getItem('token')
     const { token } = useContext(AuthContext)
 
-    if(!token) {
-        return <Navigate to='/login' />
-    }
+    return token ? children : <Navigate to="/login" replace />
+
+    // <<below code have a bug of coming back to login page when press back>>
+    // if(!token) {
+    //     return <Navigate to='/login' replace />
+    // }
     
-    return children
+    // return children
 
 }
 

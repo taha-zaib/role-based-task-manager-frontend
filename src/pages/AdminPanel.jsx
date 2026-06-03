@@ -1,0 +1,206 @@
+// import { useEffect, useState, useContext } from "react";
+// import { AuthContext } from "../context/AuthContext";
+// import { useNavigate } from "react-router-dom";
+// import Navbar from "../components/Navbar";
+// import { getTasks, createTask, deleteTask, toggleTaskStatus } from "../services/taskService";
+// import { getUsers, promoteUserToAdmin } from "../services/adminService";
+
+
+// function Dashboard() {
+
+//     const [tasks, setTasks] = useState([]);
+//     const [users, setUsers] = useState([]);
+//     const [title, setTitle] = useState('');
+//     const [loading, setLoading] = useState(true)
+
+//     const navigate = useNavigate();
+//     const { token, user, logout } = useContext(AuthContext)
+
+//     //ADMIN SECTION
+//     const fetchUsers = async () => {
+//         try {
+//             const data = await getUsers(token);
+
+//             setUsers(data)
+
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+
+//     const promoteUser = async (id) => {
+//         try {
+//             await promoteUserToAdmin(id, token)
+
+//             fetchUsers();
+
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+
+
+//     const addTask = async (e) => {
+//         e.preventDefault();
+
+//         try {
+        
+//             // const token = localStorage.getItem('token')
+
+//             const response = await createTask(title, token)
+
+//             setTitle('');
+//             fetchTasks();
+
+//         } catch (error) {
+//             console.log(error)
+//         }
+
+//     }
+
+//     const fetchTasks = async () => {
+//         try {
+            
+//             // const token = localStorage.getItem('token')
+//             setLoading(true)
+//             const data = await getTasks(token);
+
+//             setLoading(false);
+//             setTasks(data.tasks);
+
+//         } catch (error) {
+//             setLoading(false);
+//             console.log(error);
+//         }
+
+//     }
+
+//     const toggleTask = async (task) => {
+//         try {
+            
+//             // const token = localStorage.getItem('token')
+            
+//             await toggleTaskStatus(task, token)
+
+//             fetchTasks();
+
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+
+//     const handleDeleteTask = async (taskId) => {
+//         try {
+            
+//             // const token = localStorage.getItem('token')
+
+//             const response = await deleteTask(taskId, token)
+
+//             fetchTasks();
+
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+
+
+//     const handleLogout = () => {
+//         logout();
+//         navigate('/login')
+//     }
+
+//     useEffect(() => {
+//         fetchTasks();
+//         if (user?.role === 'admin') {
+//             fetchUsers();
+//         }
+//     }, [])
+
+//     if (loading) {
+//         return <h2>Loading...</h2>
+//     }
+    
+
+//     return (
+//         <div style={{ padding: '20px' }}>
+//             <Navbar />
+//             <h1>Dashboard</h1>
+//             <h2>Role: {user?.role}</h2>
+
+//             {user?.role === 'admin' && (
+//                 <h2>Admin Controls</h2>
+//             )}
+
+//             {users.map((singleUser) => (
+//                 <div key={singleUser._id}>
+
+//                     <h3>
+//                         {singleUser.name}
+//                     </h3>
+
+//                     <p>
+//                         {singleUser.email}
+//                     </p>
+
+//                     <p>
+//                         {singleUser.role}
+//                     </p>
+
+//                     {singleUser.role !== 'admin' && (
+//                         <button 
+//                             onClick={() => promoteUser(singleUser._id)}
+//                         >
+//                             Promote to Admin
+//                         </button>
+//                     )}
+
+
+//                 </div>
+//             ))}
+
+//             <form onSubmit={addTask}>
+//                 <input 
+//                     type="text"
+//                     placeholder="Enter Task"
+//                     value={title}
+//                     onChange={(e) => {
+//                         setTitle(e.target.value)
+//                     }}
+//                 />
+
+//                 <button type="submit">
+//                     Add Task
+//                 </button>
+//             </form>
+
+//             {tasks.length === 0 ? (
+//                 <p>No tasks found</p>
+//             ) : (
+//                 tasks.map((task) => (
+//                     <div key={task._id}>
+//                         <h3 style={{
+//                                 textDecoration: task.completed ? 'line-through' : 'none'
+//                             }}
+//                         >
+//                             {task.title}
+//                         </h3>
+
+//                         <button onClick={() => toggleTask(task)}>
+//                             {task.completed ? 'Completed' : 'Mark Completed'}
+//                         </button>
+
+//                         <button onClick={() => handleDeleteTask(task._id)} >
+//                             Delete
+//                         </button>
+//                     </div>
+//                 ))
+//             )}
+
+//             <button onClick={handleLogout}>
+//                 Logout
+//             </button>
+//         </div>
+//     )
+// }
+
+// export default Dashboard;

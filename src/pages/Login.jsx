@@ -50,7 +50,7 @@ function Login() {
     return (
         <div>
 
-            <h1>Login</h1>
+            <h2>Welcome!</h2>
             
             <form onSubmit={handleSubmit}>
 
@@ -85,6 +85,13 @@ function Login() {
                 </button>
 
             </form>
+
+            <p>Don't have an account?</p>
+            <button
+                onClick={() => navigate('/register')}
+            >
+                Register
+            </button>
 
             {message && <p>{message}</p>}
 
