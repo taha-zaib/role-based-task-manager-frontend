@@ -11,7 +11,7 @@ function Dashboard() {
     const [loading, setLoading] = useState(true)
 
     const navigate = useNavigate();
-    const { token, user, logout } = useContext(AuthContext)
+    const { token, logout } = useContext(AuthContext)
 
 
     const addTask = async (e) => {

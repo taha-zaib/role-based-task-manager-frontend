@@ -1,206 +1,126 @@
-// import { useEffect, useState, useContext } from "react";
-// import { AuthContext } from "../context/AuthContext";
-// import { useNavigate } from "react-router-dom";
-// import Navbar from "../components/Navbar";
-// import { getTasks, createTask, deleteTask, toggleTaskStatus } from "../services/taskService";
-// import { getUsers, promoteUserToAdmin } from "../services/adminService";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { deleteUserAsAdmin, getUsers, promoteUserToAdmin } from "../services/adminService";
 
 
-// function Dashboard() {
+function AdminPanel() {
 
-//     const [tasks, setTasks] = useState([]);
-//     const [users, setUsers] = useState([]);
-//     const [title, setTitle] = useState('');
-//     const [loading, setLoading] = useState(true)
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true)
 
-//     const navigate = useNavigate();
-//     const { token, user, logout } = useContext(AuthContext)
+    const navigate = useNavigate();
+    const { token, user, logout } = useContext(AuthContext)
 
-//     //ADMIN SECTION
-//     const fetchUsers = async () => {
-//         try {
-//             const data = await getUsers(token);
+    // USERS
+    const fetchUsers = async () => {
+        try {
+            setLoading(true)
+            const data = await getUsers(token);
 
-//             setUsers(data)
+            setLoading(false)
+            setUsers(data)
 
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+        }
+    }
 
-//     const promoteUser = async (id) => {
-//         try {
-//             await promoteUserToAdmin(id, token)
+    const promoteUser = async (id) => {
+        try {
+            await promoteUserToAdmin(id, token)
 
-//             fetchUsers();
+            fetchUsers();
 
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    const deleteUser = async (id) => {
+        try {
+            await deleteUserAsAdmin(id, token)
 
-//     const addTask = async (e) => {
-//         e.preventDefault();
+            fetchUsers();
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
-//         try {
-        
-//             // const token = localStorage.getItem('token')
-
-//             const response = await createTask(title, token)
-
-//             setTitle('');
-//             fetchTasks();
-
-//         } catch (error) {
-//             console.log(error)
-//         }
-
-//     }
-
-//     const fetchTasks = async () => {
-//         try {
-            
-//             // const token = localStorage.getItem('token')
-//             setLoading(true)
-//             const data = await getTasks(token);
-
-//             setLoading(false);
-//             setTasks(data.tasks);
-
-//         } catch (error) {
-//             setLoading(false);
-//             console.log(error);
-//         }
-
-//     }
-
-//     const toggleTask = async (task) => {
-//         try {
-            
-//             // const token = localStorage.getItem('token')
-            
-//             await toggleTaskStatus(task, token)
-
-//             fetchTasks();
-
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
-
-//     const handleDeleteTask = async (taskId) => {
-//         try {
-            
-//             // const token = localStorage.getItem('token')
-
-//             const response = await deleteTask(taskId, token)
-
-//             fetchTasks();
-
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
+    // LOGOUT
+    const handleLogout = () => {
+        logout();
+        navigate('/login')
+    }
 
 
-//     const handleLogout = () => {
-//         logout();
-//         navigate('/login')
-//     }
+    // EFFECT
+    useEffect(() => {
+        fetchUsers();
+    }, [])
 
-//     useEffect(() => {
-//         fetchTasks();
-//         if (user?.role === 'admin') {
-//             fetchUsers();
-//         }
-//     }, [])
+    if (loading) {
+        return <h2>Loading...</h2>
+    }
 
-//     if (loading) {
-//         return <h2>Loading...</h2>
-//     }
     
+    return (
+        <div>
+            <h1>Admin Panel</h1>
 
-//     return (
-//         <div style={{ padding: '20px' }}>
-//             <Navbar />
-//             <h1>Dashboard</h1>
-//             <h2>Role: {user?.role}</h2>
+            <h2>
+                Role: {user?.role}
+            </h2>
 
-//             {user?.role === 'admin' && (
-//                 <h2>Admin Controls</h2>
-//             )}
+            <h2>Admin Controls</h2>
 
-//             {users.map((singleUser) => (
-//                 <div key={singleUser._id}>
+            <h2>Admins ({users.filter(u => u.role === "admin").length})</h2>
+            {users
+                .filter(user => user.role === 'admin')
+                .map((singleUser) => (
+                    <div key={singleUser._id}>
+                        <h3>{singleUser.name}</h3>
+                        <p>{singleUser.email}</p>
+                        <p>{singleUser.role}</p>
+                    </div>
+            ))}
 
-//                     <h3>
-//                         {singleUser.name}
-//                     </h3>
+            <h2>Users ({users.filter(u => u.role !== "admin").length})</h2>
 
-//                     <p>
-//                         {singleUser.email}
-//                     </p>
+            {users
+                .filter(user => user.role !== 'admin')
+                .map((singleUser) => (
+                    <div key={singleUser._id}>
 
-//                     <p>
-//                         {singleUser.role}
-//                     </p>
+                        <h3>{singleUser.name}</h3>
+                        <p>{singleUser.email}</p>
+                        <p>{singleUser.role}</p>
 
-//                     {singleUser.role !== 'admin' && (
-//                         <button 
-//                             onClick={() => promoteUser(singleUser._id)}
-//                         >
-//                             Promote to Admin
-//                         </button>
-//                     )}
+                        {singleUser.role !== 'admin' && (
+                            <button 
+                                onClick={() => promoteUser(singleUser._id)}
+                            >
+                                Promote to Admin
+                            </button>
+                        )}
 
+                        {singleUser._id !== user?.id && (
+                            <button
+                                onClick={() => deleteUser(singleUser._id)}
+                            >
+                                Delete User
+                            </button>
+                        )}
 
-//                 </div>
-//             ))}
+                    </div>
+                ))}
 
-//             <form onSubmit={addTask}>
-//                 <input 
-//                     type="text"
-//                     placeholder="Enter Task"
-//                     value={title}
-//                     onChange={(e) => {
-//                         setTitle(e.target.value)
-//                     }}
-//                 />
+            <button onClick={handleLogout}>
+                Logout
+            </button>
+        </div>
+    )
+}
 
-//                 <button type="submit">
-//                     Add Task
-//                 </button>
-//             </form>
-
-//             {tasks.length === 0 ? (
-//                 <p>No tasks found</p>
-//             ) : (
-//                 tasks.map((task) => (
-//                     <div key={task._id}>
-//                         <h3 style={{
-//                                 textDecoration: task.completed ? 'line-through' : 'none'
-//                             }}
-//                         >
-//                             {task.title}
-//                         </h3>
-
-//                         <button onClick={() => toggleTask(task)}>
-//                             {task.completed ? 'Completed' : 'Mark Completed'}
-//                         </button>
-
-//                         <button onClick={() => handleDeleteTask(task._id)} >
-//                             Delete
-//                         </button>
-//                     </div>
-//                 ))
-//             )}
-
-//             <button onClick={handleLogout}>
-//                 Logout
-//             </button>
-//         </div>
-//     )
-// }
-
-// export default Dashboard;
+export default AdminPanel;

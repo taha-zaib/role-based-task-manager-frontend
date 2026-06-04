@@ -28,3 +28,16 @@ export const promoteUserToAdmin = async (id, token) => {
 
     return response.data;
 }
+
+export const deleteUserAsAdmin = async (id, token) => {
+    const response = await axios.delete(
+        `${API_URL}/users/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+
+    return response.data;
+}

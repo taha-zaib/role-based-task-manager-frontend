@@ -35,10 +35,14 @@ function Login() {
                 data.user
             )
 
-            setMessage('Login Successful')
+            setMessage(`Login Successful as ${data.user.role}`)
 
             //navigate
-            navigate('/dashboard')
+            if (data.user.role === 'admin') {
+                navigate('/admin')
+            } else {
+                navigate('/dashboard')
+            }
 
         } catch (error) {
             setMessage(
