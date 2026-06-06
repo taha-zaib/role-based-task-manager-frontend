@@ -15,6 +15,19 @@ export const getUsers = async (token) => {
     return response.data;
 }
 
+export const getUserById = async (id, token) => {
+    const response = await axios.get(
+        `${API_URL}/users/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+
+    return response.data;
+}
+
 export const promoteUserToAdmin = async (id, token) => {
     const response = await axios.patch(
         `${API_URL}/users/${id}/promote`,

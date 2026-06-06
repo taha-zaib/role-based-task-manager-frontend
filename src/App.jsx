@@ -7,7 +7,9 @@ import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
 
 import ProtectedRoutes from "./routes/ProtectedRoutes";
-import AdminRoute from "./components/ADminRoute";
+import AdminRoute from "./components/AdminRoute";
+import UsersPage from "./pages/UsersPage";
+import UserDetailsPage from "./pages/userDetailsPage";
 
 function App() {
   return (
@@ -30,14 +32,11 @@ function App() {
           }
         />
 
-        <Route 
-          path="/admin" 
-          element={
-            <AdminRoute>
-              <AdminPanel />
-            </AdminRoute>
-          }
-        />
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin/users" element={<UsersPage />} />
+          <Route path="/admin/users/:id" element={<UserDetailsPage />} />
+        </Route>
 
       </Routes>
 
