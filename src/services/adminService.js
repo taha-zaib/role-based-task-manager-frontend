@@ -28,6 +28,19 @@ export const getUserById = async (id, token) => {
     return response.data;
 }
 
+export const getTasksByUserId = async (id, token) => {
+    const response = await axios.get(
+        `${API_URL}/users/${id}/tasks`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+
+    return response.data;
+}
+
 export const promoteUserToAdmin = async (id, token) => {
     const response = await axios.patch(
         `${API_URL}/users/${id}/promote`,

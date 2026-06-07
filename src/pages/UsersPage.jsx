@@ -17,12 +17,13 @@ function UsersPage() {
             setLoading(true)
             const data = await getUsers(token);
     
-            setLoading(false)
             setUsers(data)
+            setLoading(false)
     
         } catch (error) {
-            setLoading(false)
             console.log(error)
+            setUsers([]);
+            setLoading(false)
         }
     }
 
@@ -33,6 +34,9 @@ function UsersPage() {
     if (loading) {
         return <h2>Loading...</h2>
     }
+    if (users.length === 1) {
+        return <h2>No user has signed up yet!</h2>
+    }
 
     return (
         <div>
@@ -41,27 +45,13 @@ function UsersPage() {
             {users
                 .map((singleUser) => (
                     <div key={singleUser._id}>
-                        <button onClick={() => naviagte(`/admin/users/${singleUser._id}`)}>
-                            <p>Name: {singleUser.name}</p>
-                            <p>Email: {singleUser.email}</p>
-                            <p>Role: {singleUser.role}</p>
-
-                            {/* {singleUser.role !== 'admin' && (
-                                <button 
-                                    onClick={() => promoteUser(singleUser._id)}
-                                >
-                                    Promote to Admin
-                                </button>
-                            )} */}
-
-                            {/* {singleUser._id !== user?.id && (
-                                <button
-                                    onClick={() => deleteUser(singleUser._id)}
-                                >
-                                    Delete User
-                                </button>
-                            )} */}
-                        </button>
+                        {singleUser._id !== user?.id && (
+                            <button onClick={() => naviagte(`/admin/users/${singleUser._id}`)}>
+                                <p>Name: {singleUser.name}</p>
+                                <p>Email: {singleUser.email}</p>
+                                <p>Role: {singleUser.role}</p>
+                            </button>
+                        )}
                     </div>
             ))}
         </div>

@@ -12,43 +12,11 @@ function AdminPanel() {
     const navigate = useNavigate();
     const { token, user, logout } = useContext(AuthContext)
 
-    // const promoteUser = async (id) => {
-    //     try {
-    //         await promoteUserToAdmin(id, token)
-
-    //         fetchUsers();
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
-    // const deleteUser = async (id) => {
-    //     try {
-    //         await deleteUserAsAdmin(id, token)
-
-    //         fetchUsers();
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
     // LOGOUT
     const handleLogout = () => {
         logout();
         navigate('/login')
     }
-
-
-    // EFFECT
-    // useEffect(() => {
-    //     fetchUsers();
-    // }, [])
-
-    // if (loading) {
-    //     return <h2>Loading...</h2>
-    // }
-
     
     return (
         <div>
