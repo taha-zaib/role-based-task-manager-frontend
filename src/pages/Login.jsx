@@ -24,7 +24,6 @@ function Login() {
         try {
         
             const data = await loginUser(formData);
-            console.log("data", data)
 
             // storing the token in local storage of the browser
             // localStorage.setItem(
