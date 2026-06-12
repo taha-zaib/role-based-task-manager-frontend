@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
-import { deleteUserAsAdmin, getTasksByUserId, getUserById, getUsers, promoteUserToAdmin } from "../services/adminService";
-import { AuthContext } from "../context/AuthContext";
+import { deleteUserAsAdmin, getTasksByUserId, getUserById, getUsers, promoteUserToAdmin } from "../../services/adminService";
+import { AuthContext } from "../../context/AuthContext";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getTasks } from "../services/taskService";
+import { getTasks } from "../../services/taskService";
 
 function UserDetailsPage() {
 

@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL = 'https://role-based-task-manager-production.up.railway.app/api/admin';
+const API_URL = import.meta.env.VITE_API_URL
 
 export const getUsers = async (token) => {
     const response = await axios.get(
-        `${API_URL}/users`,
+        `${API_URL}/admin/users`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -17,7 +17,7 @@ export const getUsers = async (token) => {
 
 export const getUserById = async (id, token) => {
     const response = await axios.get(
-        `${API_URL}/users/${id}`,
+        `${API_URL}/admin/users/${id}`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -30,7 +30,7 @@ export const getUserById = async (id, token) => {
 
 export const getTasksByUserId = async (id, token) => {
     const response = await axios.get(
-        `${API_URL}/users/${id}/tasks`,
+        `${API_URL}/admin/users/${id}/tasks`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -43,7 +43,7 @@ export const getTasksByUserId = async (id, token) => {
 
 export const promoteUserToAdmin = async (id, token) => {
     const response = await axios.patch(
-        `${API_URL}/users/${id}/promote`,
+        `${API_URL}/admin/users/${id}/promote`,
         {},
         {
             headers: {
@@ -57,7 +57,7 @@ export const promoteUserToAdmin = async (id, token) => {
 
 export const deleteUserAsAdmin = async (id, token) => {
     const response = await axios.delete(
-        `${API_URL}/users/${id}`,
+        `${API_URL}/admin/users/${id}`,
         {
             headers: {
                 Authorization: `Bearer ${token}`

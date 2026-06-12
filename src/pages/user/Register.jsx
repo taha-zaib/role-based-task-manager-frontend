@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../services/authService";
+import { registerUser } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -9,7 +9,8 @@ function Register() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
+        adminCode: ''
     })
 
     const [message, setMessage] = useState('')
@@ -20,9 +21,10 @@ function Register() {
         try {
             
             const response = await registerUser(formData)
-            setMessage("Registration Successful!")
+            setMessage("Registration received, awaiting admin approval.")
 
-            navigate('/login')
+            console.log(response)
+            console.log('Registration received, awaiting admin approval.')
 
         } catch (error) {
             setMessage(
@@ -31,6 +33,13 @@ function Register() {
             console.log(error.response.data)
         }
 
+    }
+
+    const handleChange = async (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
     }
 
     return (
@@ -42,40 +51,41 @@ function Register() {
                 <div>
                     <input 
                         type="text"
+                        name="name"
                         placeholder="Enter name"
                         value={formData.name}
-                        onChange={(e) => {
-                            setFormData({
-                                ...formData,
-                                name: e.target.value
-                            })
-                        }} />
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <div>
                     <input 
                         type="email"
+                        name="email"
                         placeholder="Enter email"
                         value={formData.email}
-                        onChange={(e) =>{
-                            setFormData({
-                                ...formData,
-                                email: e.target.value
-                            })
-                        }} />
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <div>
                     <input 
                         type="password"
+                        name="password"
                         placeholder="Enter password"
                         value={formData.password}
-                        onChange={(e) => {
-                            setFormData({
-                                ...formData,
-                                password: e.target.value
-                            })
-                        }} />
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <input
+                        type="text"
+                        name="adminCode"
+                        placeholder="Enter admin code"
+                        value={formData.adminCode}
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <button type="submit">
@@ -83,6 +93,14 @@ function Register() {
                 </button>
                 
             </form>
+            {message && <p>{message}</p>}
+
+            <p>Want to register as admin?</p>
+            <button
+                onClick={() => navigate('/admin/register')}
+            >
+                Admin Registration
+            </button>
 
             <p>Already have an account?</p>
             <button 
@@ -90,8 +108,6 @@ function Register() {
             >
                 Login
             </button>
-
-            {message && <p>{message}</p>}
         </div>
     )
 }

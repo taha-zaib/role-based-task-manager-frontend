@@ -1,15 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import AdminPanel from "./pages/AdminPanel";
+
+import UserRegister from "./pages/user/Register";
+import Dashboard from "./pages/user/Dashboard";
+
+import AdminRegister from "./pages/admin/Register"
+import AdminPanel from "./pages/admin/AdminPanel";
+import UsersPage from "./pages/admin/UsersPage";
+import UserDetailsPage from "./pages/admin/userDetailsPage";
+import AdminRoute from "./components/AdminRoute";
 
 import ProtectedRoutes from "./routes/ProtectedRoutes";
-import AdminRoute from "./components/AdminRoute";
-import UsersPage from "./pages/UsersPage";
-import UserDetailsPage from "./pages/userDetailsPage";
 
 function App() {
   return (
@@ -18,10 +21,11 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Home />} />
-
         <Route path="/login" element={<Login />} />
 
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<UserRegister />} />
+        <Route path="/admin/register" element={<AdminRegister />} />
+
 
         <Route 
           path="/dashboard" 

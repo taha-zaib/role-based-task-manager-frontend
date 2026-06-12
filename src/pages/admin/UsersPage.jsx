@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { getUsers } from "../services/adminService";
+import { AuthContext } from "../../context/AuthContext";
+import { getUsers } from "../../services/adminService";
 import { useNavigate } from "react-router-dom";
 
 function UsersPage() {
